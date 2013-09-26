@@ -2,4 +2,4 @@ VocabParser
 ===========
 A website to get word definitions for vocabulary lists.
 
-Please visit the [http://maximaximal.com/VocabParser](installation website) to try this out.
+Please visit the [installation website](http://maximaximal.com/VocabParser) to try this out.
