@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vocab Parser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet" media="screen">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/html5shiv.js"></script>
+      <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+        <header>
+            <div class="page-header">
+                <h1>Vocab Definition Searcher - Definitions at ease!</h1>
+            </div>
+            <div class="navbar navbar-default">
+                <div class="navbar-header">
+                    <ul class="nav navbar-nav">
+                        <li><a href="http://maximaximal.com">Max Heisinger</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <content>
+            <div class="row">
+                <div class="col-md-12">
+                    <noscript>
+                        <div class="alert alert-danger">
+                            <h1>Damn!!</h1>
+                            <p>You need JavaScript enabled for this service, it will send your data to the server and parse the results. This won't work without it!!</p>
+                        </div>
+                    </noscript>
+                    <h1>Step 1 <small>Enter the list</small></h1>
+                    <p>The words have to be in correct spelling and are seperated with each new line.</p>
+                    <textarea class="form-control" id="InputWords" rows="8"></textarea>
+                    
+                    <h1>Step 2 <small>Change parameters</small></h1>
+                    <p>These settings have been set per default and should be okay for now. If you experience problems with them, please change them as you like.</p>
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="UrlParameter">URL to the definition site (the word will be appended to this)</label>
+                            <input type="text" class="form-control" id="UrlParameter" value='http://www.wordreference.com/definition/'>
+                        </div>
+                        <div class="form-group">
+                            <label for="CSSSelectorParameter">CSS selector to the definitions</label>
+                            <input type="text" class="form-control" id="CSSSelectorParameter" value='.gramcat'>
+                        </div>
+                    </form>
+                    <h1>Step 3 <small>Let it do it's thing!</small></h1>
+                    <p>Press the action button and wait for the parser to complete!</p>
+                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="parseList()">Fetch Definitions!</button>
+                    <button type="button" class="btn btn-lg btn-block" onclick='$("#FetchedDefinitions").html("")'>Clear List</button>
+                    <div id="FinishedDiv">
+                        <h1>Cookies ready! <small>Finished parsing!</small></h1>
+                        <p>Copy the list into a word document or <a href="#" onclick="openInNewtab()">open</a> it in a new tab to print it out.</p>
+                        <div id="FetchedDefinitions">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </content>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    
+    <script src="js/script.js"></script>
+  </body>
+</html>
