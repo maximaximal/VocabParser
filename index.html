@@ -21,12 +21,13 @@
             <div class="page-header">
                 <h1>Vocab Definition Searcher - Definitions at ease!</h1>
             </div>
-            <div class="navbar navbar-default">
+            <div class="navbar navbar-inverse">
                 <div class="navbar-header">
                     <ul class="nav navbar-nav">
                         <li><a href="http://maximaximal.com">Max Heisinger</a></li>
                     </ul>
                 </div>
+                <p class="navbar-text pull-right"><a class="navbar-link" href="https://github.com/maximaximal/VocabParser">Source on GitHub</a></p>
             </div>
         </header>
         <content>
@@ -44,20 +45,82 @@
                     
                     <h1>Step 2 <small>Change parameters</small></h1>
                     <p>These settings have been set per default and should be okay for now. If you experience problems with them, please change them as you like.</p>
-                    <form role="form">
-                        <div class="form-group">
-                            <label for="UrlParameter">URL to the definition site (the word will be appended to this)</label>
-                            <input type="text" class="form-control" id="UrlParameter" value='http://www.wordreference.com/definition/'>
+                    <h2>Input Sources</h2>
+                        <div class="collapse-group">
+                            <p>Specify the sources of the definitions and translations. <a href="#" id="InputSourcesExpander">Expand to view the options</a>.</p>
+                            <div class="collapse">
+                                <h3>Definition Source</h3>
+                                    <p>The definitions for the words will be fetched from here.</p>
+                                    <div class="form-group">
+                                        <label for="UrlParameter">URL to the definition site (the word will be appended to this)</label>
+                                        <input type="text" class="form-control" id="UrlParameter" value='http://www.wordreference.com/definition/'>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="UrlParameterAfter">String which has to be appended to the url. (after the word)</label>
+                                        <input type="text" class="form-control" id="UrlParameterAfter" value=''>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CSSSelectorParameter">CSS selector to the definitions</label>
+                                        <input type="text" class="form-control" id="CSSSelectorParameter" value='.gramcat'>
+                                    </div>
+                                <h3>Translation Source</h3>
+                                    <p>The translations for the words will be fetched from here. They should be as short as possible.</p>
+                                    <div class="form-group">
+                                        <label for="TranslationUrlParameter">URL to the translation site (the word will be appended to this)</label>
+                                        <input type="text" class="form-control" id="TranslationUrlParameter" value='http://www.dict.cc/englisch-deutsch/'>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="TranslationUrlParameterAfter">String which has to be appended to the url. (after the word)</label>
+                                        <input type="text" class="form-control" id="TranslationUrlParameterAfter" value='.html'>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="TranslationCSSSelectorParameter">CSS selector to the definitions</label>
+                                        <input type="text" class="form-control" id="TranslationCSSSelectorParameter" value='dl dd'>
+                                    </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="CSSSelectorParameter">CSS selector to the definitions</label>
-                            <input type="text" class="form-control" id="CSSSelectorParameter" value='.gramcat'>
-                        </div>
-                    </form>
+                    <h2><span class="label label-success">New</span> Output Formatting</h2>
+                        <p>The output of the parser is configurable in multiple ways.</p>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label" for="CreateTable">Create a table of the results</label>
+                                <div class="col-lg-9">
+                                    <input type="checkbox" class="form-control" id="CreateTable">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label" for="AddTranslation">Add translations</label>
+                                <div class="col-lg-9">
+                                    <input type="checkbox" class="form-control" id="AddTranslation">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label" for="AddDefinition">Add definitions</label>
+                                <div class="col-lg-9">
+                                    <input type="checkbox" class="form-control" id="AddDefinition">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label" for="FirstDefinitionWord">Only first definition</label>
+                                <div class="col-lg-9">
+                                    <input type="checkbox" class="form-control" id="FirstDefinitionWord">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label" for="FirstTranslationWord">Only first translation</label>
+                                <div class="col-lg-9">
+                                    <input type="checkbox" class="form-control" id="FirstTranslationWord">
+                                </div>
+                            </div>
+                        </form>
                     <h1>Step 3 <small>Let it do it's thing!</small></h1>
                     <p>Press the action button and wait for the parser to complete!</p>
                     <button type="button" class="btn btn-primary btn-lg btn-block" onclick="parseList()">Fetch Definitions!</button>
                     <button type="button" class="btn btn-lg btn-block" onclick='$("#FetchedDefinitions").html("")'>Clear List</button>
+                    <div class="alert alert-success" id="successMessage">
+                        <h1>Hell Yeah!</h1>
+                        <p>Finished processing the list! The results will populate in a couple of seconds while the websites are recieved.</p>
+                    </div>
                     <div id="FinishedDiv">
                         <h1>Cookies ready! <small>Finished parsing!</small></h1>
                         <p>Copy the list into a word document or <a href="#" onclick="openInNewtab()">open</a> it in a new tab to print it out.</p>

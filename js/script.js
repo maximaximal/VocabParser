@@ -1,5 +1,15 @@
+$("#successMessage").hide();
+
+$('#InputSourcesExpander').on('click', function(e) {
+    e.preventDefault();
+    var $this = $(this);
+    var $collapse = $this.closest('.collapse-group').find('.collapse');
+    $collapse.collapse('toggle');
+});
+
 function parseList()
 {
+    $("#successMessage").hide();
     var lines = $("#InputWords").val().split("\n");
     $.each(lines, function(n, elem) {
         $.get("getUrl.php?url=" + $("#UrlParameter").val() + encodeURI(elem), function(data) {
@@ -7,7 +17,7 @@ function parseList()
             $("#FetchedDefinitions").append($(data).find($("#CSSSelectorParameter").val()).html());
         });
     });
-    
+    $("#successMessage").show();
 }
 function openInNewtab()
 {
