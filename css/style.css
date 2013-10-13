@@ -10,7 +10,7 @@
  * ================================================= 
  */
 
-.successMessage {
+#progressMessage {
     display: none;
 }
 

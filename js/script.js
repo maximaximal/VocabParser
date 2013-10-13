@@ -1,4 +1,5 @@
-$("#successMessage").hide();
+$("#progressMessage").hide();
+$("#FinishedDiv").hide();
 
 $('#InputSourcesExpander').on('click', function(e) {
     e.preventDefault();
@@ -7,17 +8,39 @@ $('#InputSourcesExpander').on('click', function(e) {
     $collapse.collapse('toggle');
 });
 
+var itemProgress = 0;
+var itemCount = 0;
+
 function parseList()
 {
-    $("#successMessage").hide();
+    itemCount = 0;
+    itemProgress = 0;
+    $("#progressMessage").show();
     var lines = $("#InputWords").val().split("\n");
     $.each(lines, function(n, elem) {
+        //Add 1 item
+        itemCount = itemCount + 1;
         $.get("getUrl.php?url=" + $("#UrlParameter").val() + encodeURI(elem), function(data) {
             $("#FetchedDefinitions").append("<strong>" + elem + "</strong><br>");
             $("#FetchedDefinitions").append($(data).find($("#CSSSelectorParameter").val()).html());
+            itemProgress = itemProgress + 1;
+            checkFinished();
         });
     });
-    $("#successMessage").show();
+}
+/**
+* @brief Checks if the fetching has finished.
+*/
+function checkFinished()
+{
+    var width = itemProgress / itemCount * 100;
+    $('#fetchingProgress').width(width + '%');
+    if(itemCount == itemProgress)
+    {
+        //Finished!
+        $("#progressMessage").hide();
+        $("#FinishedDiv").show();
+    }
 }
 function openInNewtab()
 {
