@@ -40,6 +40,7 @@ function checkFinished()
         //Finished!
         $("#progressMessage").hide();
         $("#FinishedDiv").show();
+        $('#fetchingProgress').width(0);
     }
 }
 function openInNewtab()
@@ -72,4 +73,9 @@ function openInNewtab()
     newWindow.document.open();
     newWindow.document.write(htmlTemplateHead + $("#FetchedDefinitions").html() + htmlTemplateFoot);
     newWindow.document.close();
+}
+function clearList()
+{
+    $("#FetchedDefinitions").html("");
+    $("#FinishedDiv").hide();
 }
