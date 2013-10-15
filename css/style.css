@@ -13,6 +13,9 @@
 #progressMessage {
     display: none;
 }
+#FetchedDefinitions table {
+    width: 100%;
+}
 
 header {
     padding-top: 10px;

@@ -10,23 +10,90 @@ $('#InputSourcesExpander').on('click', function(e) {
 
 var itemProgress = 0;
 var itemCount = 0;
+var run = false;
 
 function parseList()
 {
     itemCount = 0;
     itemProgress = 0;
-    $("#progressMessage").show();
-    var lines = $("#InputWords").val().split("\n");
-    $.each(lines, function(n, elem) {
-        //Add 1 item
-        itemCount = itemCount + 1;
-        $.get("getUrl.php?url=" + $("#UrlParameter").val() + encodeURI(elem), function(data) {
-            $("#FetchedDefinitions").append("<strong>" + elem + "</strong><br>");
-            $("#FetchedDefinitions").append($(data).find($("#CSSSelectorParameter").val()).html());
-            itemProgress = itemProgress + 1;
-            checkFinished();
+    output = ["", ""];
+    tableCreated = false;
+        run = false;
+        $("#progressMessage").show();
+        var lines = $("#InputWords").val().split("\n");
+        $.each(lines, function(n, elem) {
+            //Add 1 item
+            itemCount = itemCount + 1;
+
+            if($("#AddTranslation").is(":checked"))
+                itemCount = itemCount + 1;
+            
+            $.get("getUrl.php?url=" + $("#UrlParameter").val() + encodeURI(elem) + $("#UrlParameterAfter").val(), function(data) {
+                itemProgress = itemProgress + 1;
+                if($("#AddTranslation").is(":checked"))
+                {
+                    $.get("getUrl.php?url=" + $("#TranslationUrlParameter").val() + encodeURI(elem) + $("#TranslationUrlParameterAfter").val(), function(Tdata) {
+                        itemProgress = itemProgress + 1;
+                        addToList(elem, $(data).find($("#CSSSelectorParameter").val()).html(), 
+                                 $(Tdata).find($("#TranslationCSSSelectorParameter").val()).html());
+                        checkFinished();
+                    });
+                }
+                else
+                {
+                    addToList(elem, $(data).find($("#CSSSelectorParameter").val()).html(), "")
+                    checkFinished();
+                }
+            });
         });
-    });
+        run = true;
+    }
+
+    var tableCreated = false;
+    var output;
+
+    function addToList(word, definition, translation)
+    {
+        if($("#CreateTable").is(":checked"))
+        {
+            var element = "";
+            if(!tableCreated)
+            {
+                //Create a table.
+                element = '<table class="table table-bordered"><thead><tr><th>Word</th>\n';
+                if($("#AddDefinition").is(":checked"))
+                    element += "<th>Definition</th>";
+                if($("#AddTranslation").is(':checked'))
+                    element += "<th>Translation</th>";
+                element += '</tr></thead><tbody>\n';
+                tableCreated = true;
+            }
+            element += "<tr>\n";
+            element += "<td>" + word + "</td>";
+            if($("#AddDefinition").is(":checked"))
+                element += "<td>" + definition + "</td>";
+            if($("#AddTranslation").is(":checked"))
+                element += "<td>" + translation + "</td>";
+            element += "</tr>";  
+        
+            if(itemCount == itemProgress)
+            {
+                element += "</tbody>";
+                element += "</table>";
+            }
+            output.push(element);
+        }
+        else
+        {
+            //Create a simple list.
+            if($("#AddTranslation").is(":checked"))
+                $("#FetchedDefinitions").append("<strong>" + word + "</strong> - <i>" + translation + "</i><br>\n");
+            else
+                $("#FetchedDefinitions").append("<strong>" + word + "</strong><br>\n");
+
+        if($("#AddDefinition").is(":checked"))
+            $("#FetchedDefinitions").append(definition + "\n");
+    }
 }
 /**
 * @brief Checks if the fetching has finished.
@@ -37,10 +104,14 @@ function checkFinished()
     $('#fetchingProgress').width(width + '%');
     if(itemCount == itemProgress)
     {
-        //Finished!
-        $("#progressMessage").hide();
-        $("#FinishedDiv").show();
-        $('#fetchingProgress').width(0);
+        if(run == true)
+        {
+            //Finished!
+            $("#progressMessage").hide();
+            $("#FinishedDiv").show();
+            $('#fetchingProgress').width(0);
+            $("#FetchedDefinitions").append(output.join(""));
+        }
     }
 }
 function openInNewtab()
@@ -48,7 +119,7 @@ function openInNewtab()
     var htmlTemplateHead = '<!DOCTYPE html> \n \
 <html> \n \
   <head> \n \
-    <title>parsing Results</title> \n \
+    <title>Vocab Parser - Results</title> \n \
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> \n \
     <!-- Bootstrap --> \n \
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen"> \n \
