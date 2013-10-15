@@ -28,20 +28,33 @@ function parseList()
             if($("#AddTranslation").is(":checked"))
                 itemCount = itemCount + 1;
             
+            var def;
+            var tran;
             $.get("getUrl.php?url=" + $("#UrlParameter").val() + encodeURI(elem) + $("#UrlParameterAfter").val(), function(data) {
                 itemProgress = itemProgress + 1;
                 if($("#AddTranslation").is(":checked"))
                 {
                     $.get("getUrl.php?url=" + $("#TranslationUrlParameter").val() + encodeURI(elem) + $("#TranslationUrlParameterAfter").val(), function(Tdata) {
                         itemProgress = itemProgress + 1;
-                        addToList(elem, $(data).find($("#CSSSelectorParameter").val()).html(), 
-                                 $(Tdata).find($("#TranslationCSSSelectorParameter").val()).html());
+                        if($("#FirstDefinitionWord").is(":checked"))
+                            def = $(data).find($("#CSSSelectorParameter").val()).first().html();
+                        else
+                            def = $(data).find($("#CSSSelectorParameter").val()).html();
+                        if($("#FirstDefinitionWord").is(":checked"))
+                            tran = $(Tdata).find($("#TranslationCSSSelectorParameter").val()).first().html();
+                        else
+                            tran = $(Tdata).find($("#TranslationCSSSelectorParameter").val()).html();
+                        addToList(elem, def, tran);
                         checkFinished();
                     });
                 }
                 else
                 {
-                    addToList(elem, $(data).find($("#CSSSelectorParameter").val()).html(), "")
+                    if($("#FirstDefinitionWord").is(":checked"))
+                        def = $(data).find($("#CSSSelectorParameter").val()).first().html();
+                    else
+                        def = $(data).find($("#CSSSelectorParameter").val()).html();
+                    addToList(elem, def, "");
                     checkFinished();
                 }
             });
