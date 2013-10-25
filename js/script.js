@@ -28,8 +28,9 @@ function parseList()
             if($("#AddTranslation").is(":checked"))
                 itemCount = itemCount + 1;
             
-            var def;
-            var tran;
+            var def = "";
+            var tran = "";
+
             $.get("getUrl.php?url=" + $("#UrlParameter").val() + encodeURI(elem) + $("#UrlParameterAfter").val(), function(data) {
                 itemProgress = itemProgress + 1;
                 if($("#AddTranslation").is(":checked"))
@@ -39,11 +40,12 @@ function parseList()
                         if($("#FirstDefinitionWord").is(":checked"))
                             def = $(data).find($("#CSSSelectorParameter").val()).first().html();
                         else
-                            def = $(data).find($("#CSSSelectorParameter").val()).html();
+                            def = $(data).find($("#CSSSelectorParameter").val()).map(function() {return this.innerHTML}).get();
+;
                         if($("#FirstDefinitionWord").is(":checked"))
-                            tran = $(Tdata).find($("#TranslationCSSSelectorParameter").val()).first().html();
-                        else
                             tran = $(Tdata).find($("#TranslationCSSSelectorParameter").val()).html();
+                        else
+                            tran = $(Tdata).find($("#TranslationCSSSelectorParameter").val()).map(function() {return this.innerHTML}).get();
                         addToList(elem, def, tran);
                         checkFinished();
                     });
@@ -53,7 +55,7 @@ function parseList()
                     if($("#FirstDefinitionWord").is(":checked"))
                         def = $(data).find($("#CSSSelectorParameter").val()).first().html();
                     else
-                        def = $(data).find($("#CSSSelectorParameter").val()).html();
+                        def = $(data).find($("#CSSSelectorParameter").val()).map(function() {return this.innerHTML}).get();
                     addToList(elem, def, "");
                     checkFinished();
                 }
