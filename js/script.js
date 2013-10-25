@@ -64,47 +64,47 @@ function parseList()
         run = true;
     }
 
-    var tableCreated = false;
-    var output;
+var tableCreated = false;
+var output;
 
-    function addToList(word, definition, translation)
+function addToList(word, definition, translation)
+{
+    if($("#CreateTable").is(":checked"))
     {
-        if($("#CreateTable").is(":checked"))
+        var element = "";
+        if(!tableCreated)
         {
-            var element = "";
-            if(!tableCreated)
-            {
-                //Create a table.
-                element = '<table class="table table-bordered"><thead><tr><th>Word</th>\n';
-                if($("#AddDefinition").is(":checked"))
-                    element += "<th>Definition</th>";
-                if($("#AddTranslation").is(':checked'))
-                    element += "<th>Translation</th>";
-                element += '</tr></thead><tbody>\n';
-                tableCreated = true;
-            }
-            element += "<tr>\n";
-            element += "<td>" + word + "</td>";
+            //Create a table.
+            element = '<table class="table table-bordered"><thead><tr><th>Word</th>\n';
             if($("#AddDefinition").is(":checked"))
-                element += "<td>" + definition + "</td>";
-            if($("#AddTranslation").is(":checked"))
-                element += "<td>" + translation + "</td>";
-            element += "</tr>";  
-        
-            if(itemCount == itemProgress)
-            {
-                element += "</tbody>";
-                element += "</table>";
-            }
-            output.push(element);
+                element += "<th>Definition</th>";
+            if($("#AddTranslation").is(':checked'))
+                element += "<th>Translation</th>";
+            element += '</tr></thead><tbody>\n';
+            tableCreated = true;
         }
-        else
+        element += "<tr>\n";
+        element += "<td>" + word + "</td>";
+        if($("#AddDefinition").is(":checked"))
+            element += "<td>" + definition + "</td>";
+        if($("#AddTranslation").is(":checked"))
+            element += "<td>" + translation + "</td>";
+        element += "</tr>";  
+    
+        if(itemCount == itemProgress)
         {
-            //Create a simple list.
-            if($("#AddTranslation").is(":checked"))
-                $("#FetchedDefinitions").append("<strong>" + word + "</strong> - <i>" + translation + "</i><br>\n");
-            else
-                $("#FetchedDefinitions").append("<strong>" + word + "</strong><br>\n");
+            element += "</tbody>";
+            element += "</table>";
+        }
+        output.push(element);
+    }
+    else
+    {
+        //Create a simple list.
+        if($("#AddTranslation").is(":checked"))
+            $("#FetchedDefinitions").append("<strong>" + word + "</strong> - <i>" + translation + "</i><br>\n");
+        else
+            $("#FetchedDefinitions").append("<strong>" + word + "</strong><br>\n");
 
         if($("#AddDefinition").is(":checked"))
             $("#FetchedDefinitions").append(definition + "\n");
@@ -126,6 +126,11 @@ function checkFinished()
             $("#FinishedDiv").show();
             $('#fetchingProgress').width(0);
             $("#FetchedDefinitions").append(output.join(""));
+            //
+            //Remove all links
+            $("#FetchedDefinitions a").each(function(){
+                $(this).replaceWith($(this).text());
+            });
         }
     }
 }
